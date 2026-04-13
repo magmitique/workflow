@@ -29,6 +29,8 @@ jobs:
           SSH_USER: ${{ secrets.STAGING_SSH_USER }}
           SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
           SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+      - name: Check SSH Configure
+        run: cat ~/.ssh/config
       - name: Stop the server
         run: ssh staging 'echo Stop'
       - name: Check out the source
