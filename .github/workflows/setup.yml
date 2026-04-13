@@ -7,6 +7,8 @@ jobs:
     name: "Tests"
     runs-on: ubuntu-latest
     steps:
+    - name: "Install NPM"
+      run: "which npm || ( apt install npm )"
     - name: "Install Nodejs Check"
       run: "which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash )"
     - name: "Reset Shell"
