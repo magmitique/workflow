@@ -18,7 +18,6 @@ jobs:
     - run: pnpm install --frozen-lockfile
     - run: pnpm --filter @apio/shared build
     - run: pnpm --filter @apio/api build
-    - run: cd apps/api && npx prisma db push && cd ../..
     - run: pnpm --filter @apio/web build
     - run: cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
     - run: cp -r apps/web/public apps/web/.next/standalone/apps/web/public
