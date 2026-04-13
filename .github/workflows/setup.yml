@@ -47,7 +47,7 @@ jobs:
               StrictHostKeyChecking no
           END
       - name: Check SSH File
-        run: cat ~/.ssh/staging
+        run: cat ~/.ssh/staging.key
       - name: Check overall SSH
         run: |
           ssh staging
