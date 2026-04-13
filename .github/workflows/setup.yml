@@ -53,9 +53,9 @@ jobs:
       - name: Start the frontend
         if: ${{ always() }}
         env:
-          API_URL=http://localhost:4000
-          SITE_URL=https://runner.axel-gros.tech
-          HOSTNAME=0.0.0.0
-          PORT=3000
-          DISALLOW_ROBOTS=false
+          API_URL: http://localhost:4000
+          SITE_URL: https://runner.axel-gros.tech
+          HOSTNAME: 0.0.0.0
+          PORT: 3000
+          DISALLOW_ROBOTS: false
         run: ssh staging 'cd ~/workflow/apps/web/.next/standalone && node apps/web/server.js'
