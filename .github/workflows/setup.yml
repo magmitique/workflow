@@ -1,18 +1,18 @@
 name: CI
 on:
-  - push
+  push:
+    branches: [main]
 jobs:
-  test:
-    name: "Tests"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "No tests"
-        run: "echo No tests has been setup"
+#  test:
+#    name: "Tests"
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: "No tests"
+#        run: "echo No tests has been setup"
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
     environment: work
-    if: github.ref == 'refs/heads/main'
     needs: test
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
