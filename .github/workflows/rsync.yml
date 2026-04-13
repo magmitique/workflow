@@ -34,8 +34,8 @@ jobs:
           mkdir -p apps/web/public/
           echo "text" >> apps/web/public/test
       - name: Send build to server
-        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/work/workflow/.ssh/staging.key" ~/apps/web/.next/static/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
+        run: rsync -rvz -e "ssh staging" ~/apps/web/.next/static/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
-        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/work/workflow/.ssh/staging.key" ~/apps/web/public/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
+        run: rsync -rvz -e "ssh staging" ~/apps/web/public/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
       - name: Services restart
         run: which cat || ssh staging 'sudo systemctl restart apio-api apio-web'
