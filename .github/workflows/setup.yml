@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "No tests"
-        run: "No tests has been setup && exit 0"
+        run: "echo No tests has been setup && exit 0"
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
