@@ -44,13 +44,9 @@ jobs:
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
           END
-      - name: Check SSH Configure
-        run: cat ~/.ssh/config
       - name: Send build to server
-        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/.ssh/staging.key" ~/apps/web/.next/static/ $SSH_USER@$SSH_HOST:/var/www/html/site --delete
+        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/.ssh/staging.key" ~/apps/web/.next/static/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
-        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/.ssh/staging.key" ~/apps/web/public/ $SSH_USER@$SSH_HOST:/var/www/html/site --delete
-      - name: Check out the source
-        run: which cat || ssh staging 'cd workflow && git fetch && git reset --hard origin/main'
+        run: rsync -rvz -e "ssh -p $SSH_PORT -i ~/.ssh/staging.key" ~/apps/web/public/ $SSH_USER@$SSH_HOST:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
       - name: Services restart
         run: which cat || ssh staging 'sudo systemctl restart apio-api apio-web'
