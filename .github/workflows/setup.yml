@@ -19,8 +19,8 @@ jobs:
     - run: pnpm --filter @apio/shared build
     - run: pnpm --filter @apio/api build
     - run: pnpm --filter @apio/web build
-    - run: cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
-    - run: cp -r apps/web/public apps/web/.next/standalone/apps/web/public
+    - run: cp -r workflow/apps/web/.next/static workflow/apps/web/.next/standalone/apps/web/.next/static
+    - run: cp -r workflow/apps/web/public workflow/apps/web/.next/standalone/apps/web/public
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
