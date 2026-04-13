@@ -15,7 +15,7 @@ jobs:
         nvm use 20
         nvm alias default 20
     - name: "Install Nodejs Check"
-      run: "which node
+      run: "which node"
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
