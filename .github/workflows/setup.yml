@@ -3,28 +3,29 @@ on:
   push:
     branches: [main]
 jobs:
-  test:
-    name: "Tests"
+  build:
+    name: "NodeJS"
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_URL: https://www.apio.systems
     steps:
-    - name: "Install NPM"
-      run: "which npm || ( apt install npm )"
-    - name: "Install Nodejs Check"
-      run: "which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash )"
-    - name: "Reset Shell"
-      run: /usr/bin/bash
-    - name: "Node v20.20.2"
-      run: |
-        nvm install 20
-        nvm use 20
-        nvm alias default 20
-    - name: "Nodejs Check Version"
-      run: "node -v"
+    - uses: actions/checkout@v5
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm --filter @apio/shared build
+    - run: pnpm --filter @apio/api build
+    - run: cd apps/api && npx prisma db push && cd ../..
+    - run: pnpm --filter @apio/web build
+    - run: cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
+    - run: cp -r apps/web/public apps/web/.next/standalone/apps/web/public
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
     environment: work
-    needs: test
+    needs: build
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -58,7 +59,7 @@ jobs:
         if: ${{ always() }}
         env:
           API_URL: http://localhost:4000
-          SITE_URL: https://runner.axel-gros.tech
+          SITE_URL: https://www.apio.systems
           HOSTNAME: 0.0.0.0
           PORT: 3000
           DISALLOW_ROBOTS: false
