@@ -10,7 +10,7 @@ jobs:
     - name: "Install Nodejs Check"
       run: "which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash )"
     - name: "Reset Shell"
-      run: source ~/.bashrc
+      run: /usr/bin/bash
     - name: "Node v20.20.2"
       run: |
         nvm install 20
