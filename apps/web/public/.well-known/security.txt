@@ -1,0 +1,35 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# Apio systems RFC 9116 security.txt
+Canonical: https://apio.systems/.well-known/security.txt
+Canonical: https://www.apio.systems/.well-known/security.txt
+
+# Security address
+Contact: https://www.apio.systems/contact/
+Contact: mailto:security@apio.systems
+
+# OpenPGP key
+Encryption: https://www.apio.systems/.well-known/apio.systems.txt
+
+# Expiration of security.txt file
+Expires: 2026-11-19T23:00:01+00:00
+
+# Languages
+Preferred-Languages: fr, en
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE41I6SdyAK1ptYLYhiLLtOM1NNdoFAmm6sMgACgkQiLLtOM1N
+NdqYWA/+P4ZNCGp8oaqtQM8YlejCxZ0N19w4axfHC7MqdpgMYDabjtX7SJqKF3GS
+tMh5Vj9YXM2GC0gP1o+OIUfmJtgKPs5DpbmkFxsIY9bPLfsownn+W4OGI6/TwgsX
+lK8CRoHAD+SzLhcdWqjFLRyDm3oSUHaOdEh8wkGcosfZBFxUDkSqkve+3wJfwRnc
+0akHQ8v6GSH2URt2sdxQIXaBzB8fD58/RKM0g3ejKnfAtWzKkaedEn/eL6KqI98q
+Q7GsHk62FpJdt0xg6e+3Io349FVczg9pv1u5sSXMl5IsppHE8AlTLPJ594xbQDSZ
+bKMYase2os1mon74ZP/iSVAoUdvc3YGLyVJPjmn2vcYdp7R/exKYgOBZen8nM1TT
+9YyNdoSLCbMYP3s7Rt3JGFNaIzAe7DIzGcjhXQWDdbxQqJs7TM5cGkBfz4lnpSh8
+WFtU4tkpoK4KJxEata7ZwzCes9cU7ZSYZKgPiQZXaHADZlGacLGZ/8HrdaKRliOY
+jM1jeTq4VXtlWF6KUfJsdLgfoiQrbc7TNJLc1SghEFznykoWuHcfjmVsaBFCvXBf
+3COfEOEwPPwDwBC+BlTYGQ8fA69OuyF0G2z8ff9kpn/0WEeEaxwfJESIsGZ0i3HC
+gaH5G+YzJ5a58OWuKySru9C/YiDNvq72buBsWovyPRzmfOn1hUY=
+=udZG
+-----END PGP SIGNATURE-----

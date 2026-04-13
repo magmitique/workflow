@@ -1,0 +1,7 @@
+{
+  "extends": "@apio/typescript-config/api.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["prisma"]
+}

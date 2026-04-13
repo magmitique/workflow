@@ -1,0 +1,9 @@
+{
+  "extends": "@apio/typescript-config/api.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "generated"]
+}

@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #0f1729;
+  --color-muted: #f6f6f5;
+  --color-muted-foreground: #737373;
+  --color-border: #e2e8f0;
+  --color-primary: #0066a3;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #ebebea;
+  --color-secondary-foreground: #0f1729;
+  --color-anthracite: #1e2533;
+  --color-anthracite-foreground: #f0f4f8;
+  --color-accent: #f7f6f3;
+  --color-accent-foreground: #0f1729;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-ring: #0066a3;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f1729;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f1729;
+  --color-sidebar: #00253d;
+  --color-sidebar-foreground: #f0f8ff;
+  --color-sidebar-border: #003d66;
+  --color-sidebar-accent: #0066a3;
+  --color-sidebar-accent-foreground: #ffffff;
+  --color-input: #e2e8f0;
+  --color-brand-yellow: #fcba0f;
+  --color-brand-yellow-foreground: #1a1a1a;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+}

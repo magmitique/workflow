@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Le Blansch;Joris
+FN:Joris Le Blansch
+TITLE:consultant ICT
+ORG:Apio systems
+TEL;TYPE=cell:+33 6 5251 3590
+EMAIL;TYPE=work:ping@apio.systems
+URL;TYPE=work:https://www.apio.systems
+END:VCARD

@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  articles  Article[]
+  leadNotes LeadNote[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+model Lead {
+  id          String     @id @default(uuid())
+  firstName   String?    @map("first_name")
+  lastName    String?    @map("last_name")
+  email       String
+  phone       String?
+  company     String?
+  companySize String?    @map("company_size")
+  sector      String?
+  needType    String?    @map("need_type")
+  budgetRange String?    @map("budget_range")
+  timeline    String?
+  message     String?    @db.Text
+  source      String?
+  pagesViewed Json?      @map("pages_viewed")
+  timeOnSite  Int?       @map("time_on_site")
+  referrer    String?
+  utmSource   String?    @map("utm_source")
+  utmMedium   String?    @map("utm_medium")
+  utmCampaign String?    @map("utm_campaign")
+  utmTerm     String?    @map("utm_term")
+  utmContent  String?    @map("utm_content")
+  status      LeadStatus @default(NEW)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  notes LeadNote[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+  @@map("leads")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  MEETING
+  PROPOSAL
+  WON
+  LOST
+}
+
+model LeadNote {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  leadId    String   @map("lead_id")
+  authorId  String   @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  lead   Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id])
+
+  @@index([leadId])
+  @@map("lead_notes")
+}
+
+model Article {
+  id              String        @id @default(uuid())
+  title           String
+  slug            String        @unique
+  content         String        @db.LongText
+  excerpt         String?       @db.Text
+  coverImage      String?       @map("cover_image")
+  status          ContentStatus @default(DRAFT)
+  publishedAt     DateTime?     @map("published_at")
+  authorId        String        @map("author_id")
+  metaTitle       String?       @map("meta_title")
+  metaDescription String?       @map("meta_description") @db.Text
+  deletedAt       DateTime?     @map("deleted_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  author User         @relation(fields: [authorId], references: [id])
+  tags   ArticleTag[]
+
+  @@index([status, publishedAt])
+  @@index([slug])
+  @@index([deletedAt])
+  @@map("articles")
+}
+
+model Tag {
+  id       String       @id @default(uuid())
+  name     String       @unique
+  slug     String       @unique
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+model ArticleTag {
+  articleId String @map("article_id")
+  tagId     String @map("tag_id")
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("article_tags")
+}
+
+model CaseStudy {
+  id                  String        @id @default(uuid())
+  title               String
+  slug                String        @unique
+  clientName          String        @map("client_name")
+  clientAnonymous     Boolean       @default(false) @map("client_anonymous")
+  sector              String?
+  techStack           Json?         @map("tech_stack")
+  context             String?       @db.Text
+  challenge           String?       @db.Text
+  solution            String?       @db.Text
+  testimonialQuote    String?       @map("testimonial_quote") @db.Text
+  testimonialAuthor   String?       @map("testimonial_author")
+  testimonialRole     String?       @map("testimonial_role")
+  coverImage          String?       @map("cover_image")
+  architectureDiagram String?       @map("architecture_diagram")
+  featured            Boolean       @default(false)
+  status              ContentStatus @default(DRAFT)
+  deletedAt           DateTime?     @map("deleted_at")
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @updatedAt @map("updated_at")
+
+  results CaseStudyResult[]
+
+  @@index([status])
+  @@index([featured])
+  @@index([deletedAt])
+  @@map("case_studies")
+}
+
+model CaseStudyResult {
+  id          String @id @default(uuid())
+  caseStudyId String @map("case_study_id")
+  metric      String
+  before      String
+  after       String
+
+  caseStudy CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+
+  @@map("case_study_results")
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
