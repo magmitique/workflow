@@ -8,19 +8,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "Install Nodejs Check"
+      run: "which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash )"
+    - name: "Reset Shell"
+      run: source ~/.bashrc
+    - name: "Node v20.20.2"
       run: |
-        which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash )
-        source ~/.bashrc
         nvm install 20
         nvm use 20
         nvm alias default 20
-    - name: "Install Nodejs Check"
-      run: "which node"
+    - name: "Nodejs Check Version"
+      run: "node -v"
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
     environment: work
-    #needs: test
+    needs: test
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
