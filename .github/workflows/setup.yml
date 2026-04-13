@@ -11,6 +11,7 @@ jobs:
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
+    environment: work
     if: github.ref == 'refs/heads/main'
     needs: test
     env:
