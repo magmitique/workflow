@@ -1,5 +1,6 @@
 name: CI
-on: [push]
+on:
+  - push
 jobs:
   test:
     name: "Tests"
@@ -12,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: test
+    env:
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
       - name: Configure SSH
         run: |
@@ -25,10 +30,6 @@ jobs:
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
           END
-        env:
-          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
       - name: Check SSH Configure
         run: cat ~/.ssh/config
       - name: Stop the server
