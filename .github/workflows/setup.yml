@@ -10,15 +10,17 @@ jobs:
       NEXT_PUBLIC_API_URL: https://www.apio.systems
     steps:
     - uses: actions/checkout@v5
-    - name: Use Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20.x'
-    - run: which pnpm || ( sudo apt install npm && sudo npm install -g pnpm@latest-10 && pnpm install )
-    - run: pnpm install --frozen-lockfile
-    - run: pnpm --filter @apio/shared build
-    - run: pnpm --filter @apio/api build
-    - run: pnpm --filter @apio/web build
+    - name: Build
+      run: |
+        which pnpm || ( sudo apt install npm && sudo npm install -g pnpm@latest-10 && pnpm install )
+        pnpm install --frozen-lockfile
+        pnpm --filter @apio/shared build
+        pnpm --filter @apio/api build
+        pnpm --filter @apio/web build
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
