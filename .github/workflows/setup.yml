@@ -19,8 +19,6 @@ jobs:
     - run: pnpm --filter @apio/shared build
     - run: pnpm --filter @apio/api build
     - run: pnpm --filter @apio/web build
-    - run: cp -r workflow/apps/web/.next/static workflow/apps/web/.next/standalone/apps/web/.next/static
-    - run: cp -r workflow/apps/web/public workflow/apps/web/.next/standalone/apps/web/public
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
@@ -48,19 +46,10 @@ jobs:
           END
       - name: Check SSH Configure
         run: cat ~/.ssh/config
-      - name: Stop the server
-        run: ssh staging 'echo Stop'
+      - name: Send build to server
+        run: rsync -rvz -e "ssh -p $SSH_PORT" apps/web/.next/static/ $SSH_USER@$SSH_HOST:/var/www/html/site --delete
+        run: rsync -rvz -e "ssh -p $SSH_PORT" apps/web/public/ $SSH_USER@$SSH_HOST:/var/www/html/site --delete
       - name: Check out the source
-        run: ssh staging 'cd workflow && git fetch && git reset --hard origin/main'
-      - name: Start the backend
-        if: ${{ always() }}
-        run: ssh staging 'cd ~/workflow/apps/api && node --env-file=.env dist/index.js'
-      - name: Start the frontend
-        if: ${{ always() }}
-        env:
-          API_URL: http://localhost:4000
-          SITE_URL: https://www.apio.systems
-          HOSTNAME: 0.0.0.0
-          PORT: 3000
-          DISALLOW_ROBOTS: false
-        run: ssh staging 'cd ~/workflow/apps/web/.next/standalone && node apps/web/server.js'
+        run: which cat || ssh staging 'cd workflow && git fetch && git reset --hard origin/main'
+      - name: Services restart
+        run: which cat || ssh staging 'sudo systemctl restart apio-api apio-web'
