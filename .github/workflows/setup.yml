@@ -3,12 +3,14 @@ on:
   push:
     branches: [main]
 jobs:
-#  test:
-#    name: "Tests"
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: "No tests"
-#        run: "echo No tests has been setup"
+  test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Install Nodejs Check"
+      run: "which node || ( curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && source ~/.bashrc && nvm install 20 && nvm use 20 && nvm alias default 20 )"
+    - name: "Install Nodejs Check"
+      run: "which node
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
@@ -40,6 +42,15 @@ jobs:
         run: ssh staging 'echo Stop'
       - name: Check out the source
         run: ssh staging 'cd workflow && git fetch && git reset --hard origin/main'
-      - name: Start the server
+      - name: Start the backend
         if: ${{ always() }}
-        run: ssh staging 'echo Start'
+        run: ssh staging 'cd ~/workflow/apps/api && node --env-file=.env dist/index.js'
+      - name: Start the frontend
+        if: ${{ always() }}
+        env:
+          API_URL=http://localhost:4000
+          SITE_URL=https://runner.axel-gros.tech
+          HOSTNAME=0.0.0.0
+          PORT=3000
+          DISALLOW_ROBOTS=false
+        run: ssh staging 'cd ~/workflow/apps/web/.next/standalone && node apps/web/server.js'
