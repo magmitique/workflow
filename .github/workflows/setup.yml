@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: "NodeJS"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       NEXT_PUBLIC_API_URL: https://www.apio.systems
     steps:
@@ -23,7 +23,7 @@ jobs:
         pnpm --filter @apio/web build
   deploy:
     name: "Deploy to staging"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: work
     needs: build
     env:
