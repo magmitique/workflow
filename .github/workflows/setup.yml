@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   build:
-    name: "NodeJS"
+    name: "Build"
     runs-on: self-hosted
     env:
       NEXT_PUBLIC_API_URL: https://www.apio.systems
@@ -46,17 +46,11 @@ jobs:
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
           END
-      - name: Check SSH File
-        run: cat ~/.ssh/staging.key
-      - name: Check overall SSH
-        run: |
-          ssh staging
-          exit
-      - name: Send build to server
+      - name: Send static to server
         run: pwd && rsync -rvz -e "ssh" apps/web/.next/static/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
         run: rsync -rvz -e "ssh" apps/web/public/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
       - name: Reset rights
         run: sudo /var/www/fix-cms-rights.sh
       - name: Services restart
-        run: which cat || ssh staging 'sudo systemctl restart apio-api apio-web'
+        run: echo "Restart apio-api and apio-web" || ssh staging 'sudo systemctl restart apio-api apio-web'
