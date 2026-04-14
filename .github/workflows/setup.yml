@@ -56,5 +56,7 @@ jobs:
         run: pwd && rsync -rvz -e "ssh" apps/web/.next/static/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
         run: rsync -rvz -e "ssh" apps/web/public/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
+      - name: Reset rights
+        run: sudo /var/www/fix-cms-rights.sh
       - name: Services restart
         run: which cat || ssh staging 'sudo systemctl restart apio-api apio-web'
