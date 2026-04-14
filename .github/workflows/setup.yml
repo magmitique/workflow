@@ -52,10 +52,6 @@ jobs:
         run: |
           ssh staging
           exit
-      - name: Check if folder exists
-        run: |
-          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static || mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static"
-          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/public || mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/public"
       - name: Send build to server
         run: pwd && rsync -rvz -e "ssh" ~/apps/web/.next/static/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server

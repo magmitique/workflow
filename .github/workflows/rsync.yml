@@ -33,11 +33,6 @@ jobs:
           echo "text" >> apps/web/.next/static/test
           mkdir -p apps/web/public/
           echo "text" >> apps/web/public/test
-      - name: Check if folder exists
-        run: |
-          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static || sudo mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static"
-          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/public || sudo mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/public"
-          ssh staging "sudo /var/www/fix-cms-rights.sh"
       - name: Send build to server
         run: rsync -rvz -e "ssh" ~/apps/web/.next/static/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
