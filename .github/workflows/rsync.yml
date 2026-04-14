@@ -33,8 +33,12 @@ jobs:
           echo "text" >> apps/web/.next/static/test
           mkdir -p apps/web/public/
           echo "text" >> apps/web/public/test
+      - name: Check if folder exists
+        run: |
+          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static || mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/.next/static"
+          ssh staging "ls /var/www/html/site/apps/web/.next/standalone/apps/web/public || mkdir -p /var/www/html/site/apps/web/.next/standalone/apps/web/public"
       - name: Send build to server
-        run: rsync -rvz -e "ssh" ~/apps/web/.next/static/ staging:/var/www/
+        run: rsync -rvz -e "ssh" ~/apps/web/.next/static/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/.next/static --delete
       - name: Send public to server
         run: rsync -rvz -e "ssh" ~/apps/web/public/ staging:/var/www/html/site/apps/web/.next/standalone/apps/web/public --delete
       - name: Services restart
