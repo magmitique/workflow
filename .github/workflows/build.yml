@@ -50,7 +50,7 @@ jobs:
       - name: Send public to server
         run: rsync -rvz -e "ssh" apps/web/public/ staging:$DEST_APP_DIR/public --delete
       - name: Reset rights
-        run: /var/www/fix-cms-rights.sh
+        run: sudo /var/www/fix-cms-rights.sh
       - name: Services restart
         run: |
           : # ssh staging 'sudo systemctl restart apio-api apio-web'
