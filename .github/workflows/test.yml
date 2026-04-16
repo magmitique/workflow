@@ -1,0 +1,17 @@
+name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    with:
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      DEST_APP_DIR: ${{ secrets.DEST_APP_DIR }}
+    steps:
+      - name: Test
+        run: echo $SSH_USER

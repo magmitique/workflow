@@ -1,0 +1,55 @@
+name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: "Build"
+    runs-on: self-hosted
+    env:
+      NEXT_PUBLIC_API_URL: https://www.apio.systems
+    steps:
+    - uses: actions/checkout@v5
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - name: Build
+      run: |
+        pnpm install --frozen-lockfile
+        pnpm --filter @apio/shared build
+        pnpm --filter @apio/api build
+        pnpm --filter @apio/web build
+  deploy:
+    name: "Deploy to staging"
+    runs-on: self-hosted
+    needs: build
+    with:
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      DEST_APP_DIR: ${{ secrets.DEST_APP_DIR }}
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
+          cat >>~/.ssh/config <<END
+          Host staging
+              HostName $SSH_HOST
+              User $SSH_USER
+              Port $SSH_PORT
+              IdentityFile ~/.ssh/staging.key
+              StrictHostKeyChecking no
+          END
+      - name: Send static to server
+        run: pwd && rsync -rvz -e "ssh" apps/web/.next/static/ staging:$DEST_APP_DIR/.next/static --delete
+      - name: Send public to server
+        run: rsync -rvz -e "ssh" apps/web/public/ staging:$DEST_APP_DIR/public --delete
+      - name: Reset rights
+        run: /var/www/fix-cms-rights.sh
+      - name: Services restart
+        run: echo "Restart apio-api and apio-web" || ssh staging 'sudo systemctl restart apio-api apio-web'
