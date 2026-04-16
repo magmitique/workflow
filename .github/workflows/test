@@ -14,4 +14,6 @@ jobs:
       DEST_APP_DIR: ${{ secrets.DEST_APP_DIR }}
     steps:
       - name: Test
-        run: echo $SSH_USER
+        run: |
+          echo $SSH_USER
+          echo $SSH_USER
