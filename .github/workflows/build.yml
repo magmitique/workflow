@@ -52,4 +52,6 @@ jobs:
       - name: Reset rights
         run: /var/www/fix-cms-rights.sh
       - name: Services restart
-        run: echo "Restart apio-api and apio-web" || ssh staging 'sudo systemctl restart apio-api apio-web'
+        run: |
+          : # ssh staging 'sudo systemctl restart apio-api apio-web'
+          echo "Restart apio-api and apio-web"
